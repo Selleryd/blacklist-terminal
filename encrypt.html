@@ -2,50 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blacklist Entry Encryptor</title>
+  <title>Blacklist Encryptor</title>
   <style>
     body {
-      font-family: monospace;
       background: #111;
       color: #0f0;
-      padding: 20px;
-    }
-    label, input {
-      display: block;
-      margin: 10px 0;
-    }
-    input, button, textarea {
       font-family: monospace;
-      font-size: 16px;
-      padding: 8px;
-      width: 100%;
-      max-width: 500px;
+      padding: 2rem;
     }
-    textarea {
-      height: 200px;
+    label, input, textarea, button {
+      display: block;
+      margin: 1rem 0;
+    }
+    input, textarea {
+      background: #222;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 0.5rem;
+      width: 100%;
+    }
+    button {
+      background: #0f0;
+      color: #000;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    pre {
+      background: #000;
+      padding: 1rem;
+      border: 1px solid #0f0;
     }
   </style>
 </head>
 <body>
-  <h2>Encrypt a New Blacklist Entry</h2>
+  <h1>Blacklist Encryptor</h1>
+  <label for="name">Name:</label>
+  <input type="text" id="name" placeholder="e.g. Smith, John">
 
-  <label for="nameInput">Name:</label>
-  <input type="text" id="nameInput" placeholder="e.g. John Doe">
+  <label for="reason">Reason:</label>
+  <input type="text" id="reason" placeholder="e.g. Theft">
 
-  <label for="reasonInput">Reason:</label>
-  <input type="text" id="reasonInput" placeholder="e.g. Fraud, theft, etc.">
+  <label for="password">Passkey:</label>
+  <input type="text" id="password" placeholder="Enter XOR key (e.g. notrust)">
 
-  <label for="passkeyInput">Password (e.g. "830020" or "notrust"):</label>
-  <input type="text" id="passkeyInput" placeholder="Enter your encryption key">
+  <button onclick="encrypt()">Encrypt</button>
 
-  <button onclick="generateEncrypted()">Generate Encrypted Entry</button>
-
-  <pre id="output"></pre>
-
-  <button onclick="addToCode()">Add to Code Block</button>
-
-  <h3>Blacklist Code Block:</h3>
-  <textarea id="codeBlock" readonly></textarea>
+  <h2>Encrypted Entry:</h2>
+  <pre id="output">// Encrypted data will appear here</pre>
+  <button onclick="copyOutput()">📋 Copy to Clipboard</button>
 
   <script>
     function xorEncode(str, key) {
@@ -57,30 +62,28 @@
       return hex;
     }
 
-    let lastEntry = "";
+    function encrypt() {
+      const name = document.getElementById('name').value.trim();
+      const reason = document.getElementById('reason').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-    function generateEncrypted() {
-      const name = document.getElementById('nameInput').value.trim();
-      const reason = document.getElementById('reasonInput').value.trim();
-      const passkey = document.getElementById('passkeyInput').value.trim();
-
-      if (!name || !reason || !passkey) {
+      if (!name || !reason || !password) {
         alert("All fields are required.");
         return;
       }
 
-      const id = xorEncode(name, passkey);
-      const encryptedReason = xorEncode(reason, passkey);
+      const id = xorEncode(name, password);
+      const encodedReason = xorEncode(reason, password);
 
-      const code = `{ id: "${id}", reason: "${encryptedReason}" }`;
-      document.getElementById('output').textContent = code;
-      lastEntry = code;
+      const result = `{ id: "${id}", reason: "${encodedReason}" },`;
+      document.getElementById('output').textContent = result;
     }
 
-    function addToCode() {
-      if (!lastEntry) return;
-      const codeBlock = document.getElementById('codeBlock');
-      codeBlock.value += (codeBlock.value ? ',\n' : '') + lastEntry;
+    function copyOutput() {
+      const text = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      });
     }
   </script>
 </body>
