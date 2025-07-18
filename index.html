@@ -3,124 +3,148 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BLACKLIST ACCESS</title>
+  <title>Blacklist Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
     body {
-      background: black;
-      color: lime;
-      font-family: 'Courier New', Courier, monospace;
       margin: 0;
       padding: 0;
+      background: black;
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
     }
+
     .container {
       padding: 40px;
-      max-width: 900px;
-      margin: auto;
     }
+
     .header {
       text-align: center;
       margin-bottom: 30px;
     }
-    .main-title {
-      font-size: 2em;
+
+    .access-level {
+      font-size: 14px;
       color: red;
+    }
+
+    .main-title {
+      font-size: 24px;
+      position: relative;
+    }
+
+    .main-title.glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      color: #f0f;
+      background: transparent;
+      overflow: hidden;
       animation: glitch 1s infinite;
     }
-    .access-level {
-      font-size: 1em;
-      color: #0f0;
-      margin-bottom: 10px;
+
+    @keyframes glitch {
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-1px, 1px); }
+      80% { transform: translate(1px, -1px); }
+      100% { transform: translate(0, 0); }
     }
+
     .subtitle {
-      font-size: 1.2em;
       color: #ccc;
+      font-size: 16px;
     }
+
     .entry {
       margin-bottom: 20px;
-      border-bottom: 1px solid lime;
+      border-bottom: 1px dashed #00ff00;
       padding-bottom: 10px;
     }
-    .reason {
-      color: #0ff;
-      margin-top: 5px;
+
+    .entry button {
+      background: transparent;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 12px;
     }
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px red; }
-      50% { text-shadow: -2px -2px blue; }
-      100% { text-shadow: 2px 2px red; }
+
+    .entry .reason {
+      margin-top: 5px;
+      color: #ff8080;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <div class="access-level">ACCESS LEVEL: ADMINISTRATOR</div>
+      <h1 class="main-title glitch" data-text="[ CLASSIFIED DATABASE // BLACKLIST ACCESS ]">
+        [ CLASSIFIED DATABASE // BLACKLIST ACCESS ]
+      </h1>
+      <p class="subtitle">These entities are permanently blacklisted from all future dealings.</p>
+    </div>
 
-<div class="container">
-  <div class="header">
-    <div class="access-level">ACCESS LEVEL: ADMINISTRATOR</div>
-    <h1 class="main-title glitch" data-text="[ CLASSIFIED DATABASE // BLACKLIST ACCESS ]">
-      [ CLASSIFIED DATABASE // BLACKLIST ACCESS ]
-    </h1>
-    <p class="subtitle">These entities are permanently blacklisted from all future dealings.</p>
+    <div id="terminalOutput">
+      <div id="blacklist"></div>
+    </div>
   </div>
 
-  <div id="terminalOutput">
-    <div id="blacklist"></div>
-  </div>
-</div>
+  <script src="blacklist-data.js"></script>
+  <script>
+    const allowedPasswords = ["830020", "notrust"];
+    let password = prompt("Enter access code:");
 
-<script>
-  const allowedPasswords = ["830020", "notrust"];
-  const password = prompt("Enter access code:");
-
-  if (!allowedPasswords.includes(password)) {
-    document.body.innerHTML = `
-      <div style="color: red; background: black; font-family: monospace; padding: 40px; font-size: 1.2em;">
-        <h1>⚠️ Unauthorized Access</h1>
-        <p>Screenshot captured.</p>
-        <p>Your location is now tracked.</p>
-        <p>All activity is being monitored.</p>
-      </div>`;
-    throw new Error("Access Denied");
-  }
-
-  // XOR Encrypted Data
-  const encryptedBlacklist = [
-    { id: "0c1a131216", reason: "4f5d57445e" }, // Jones, Alice — Fraud
-    { id: "06171e1b15", reason: "4a585a4441" }  // Smith, John — Theft
-  ];
-
-  // XOR Decode
-  function xorDecode(hexStr, key) {
-    const keyCharCode = key.charCodeAt(0);
-    let result = '';
-    for (let i = 0; i < hexStr.length; i += 2) {
-      const byte = parseInt(hexStr.substr(i, 2), 16);
-      result += String.fromCharCode(byte ^ keyCharCode);
+    if (!allowedPasswords.includes(password)) {
+      document.body.innerHTML = `
+        <div style="color: red; background: black; font-family: monospace; padding: 40px; font-size: 1.2em;">
+          <h1>⚠️ Unauthorized Access</h1>
+          <p>Screenshot captured.</p>
+          <p>Your location is now tracked.</p>
+          <p>All activity is being monitored.</p>
+        </div>`;
+      throw new Error("Access Denied");
     }
-    return result;
-  }
 
-  // Render Decrypted List
-  function renderBlacklist() {
-    const container = document.getElementById("blacklist");
-    container.innerHTML = "";
+    function xorDecode(hexStr, key) {
+      const keyCharCode = key.charCodeAt(0);
+      let result = '';
+      for (let i = 0; i < hexStr.length; i += 2) {
+        const byte = parseInt(hexStr.substr(i, 2), 16);
+        result += String.fromCharCode(byte ^ keyCharCode);
+      }
+      return result;
+    }
 
-    const decoded = encryptedBlacklist.map(entry => ({
-      name: xorDecode(entry.id, password),
-      reason: xorDecode(entry.reason, password)
-    }));
+    function renderBlacklist() {
+      const container = document.getElementById("blacklist");
+      container.innerHTML = "";
 
-    decoded.sort((a, b) => a.name.localeCompare(b.name));
+      const decoded = encryptedBlacklist.map(entry => ({
+        name: xorDecode(entry.id, password),
+        reason: xorDecode(entry.reason, password)
+      }));
 
-    decoded.forEach(entry => {
-      const div = document.createElement("div");
-      div.className = "entry";
-      div.innerHTML = `<strong>${entry.name}</strong><div class="reason">${entry.reason}</div>`;
-      container.appendChild(div);
-    });
-  }
+      decoded.sort((a, b) => a.name.localeCompare(b.name));
 
-  renderBlacklist();
-</script>
+      decoded.forEach(entry => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.innerHTML = `
+          <strong>${entry.name}</strong>
+          <button onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">👁️</button>
+          <div class="reason" style="display:none;">${entry.reason}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
 
+    renderBlacklist();
+  </script>
 </body>
 </html>
