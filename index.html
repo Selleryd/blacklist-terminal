@@ -309,6 +309,21 @@
             © 2025 Blacksite Intelligence Network | All activity monitored <span class="cursor">█</span>
         </div>
     </div>
+<script>
+  const allowedPasswords = ["830020", "notrust"];
+  let password = prompt("Enter access code:");
+
+  if (!allowedPasswords.includes(password)) {
+    document.body.innerHTML = `
+      <div style="color: red; background: black; font-family: monospace; padding: 40px; font-size: 1.2em;">
+        <h1>⚠️ Unauthorized Access</h1>
+        <p>Screenshot captured.</p>
+        <p>Your location is now tracked.</p>
+        <p>All activity is being monitored.</p>
+      </div>`;
+    throw new Error("Access Denied");
+  }
+</script>
 
     <script>
         // Easy-to-edit blacklist data - Admin can add entries here
