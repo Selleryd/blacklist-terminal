@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Access Portal</title>
+  <style>
+    body {
+      background: black;
+      color: #00FF41;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    input {
+      background: black;
+      color: #00FF41;
+      border: 1px solid #00FF41;
+      padding: 8px;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 18px;
+      background: #111;
+      border: 1px solid #00FF41;
+      color: #00FF41;
+      cursor: pointer;
+    }
+    #warning {
+      margin-top: 20px;
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Enter Access Code</h2>
+  <input type="password" id="code" placeholder="Enter password">
+  <button onclick="checkPassword()">Access</button>
+  <div id="warning"></div>
+
+  <script>
+    function checkPassword() {
+      const input = document.getElementById('code').value;
+      const warning = document.getElementById('warning');
+      if (input === '8') {
+        window.location.href = 'blacklist.html'; // Redirect if correct
+      } else {
+        warning.innerText = "Unauthorized access attempt detected.\nScreenshot captured.\nLocation tracking initiated.\nAll activity is now monitored.";
+        warning.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
