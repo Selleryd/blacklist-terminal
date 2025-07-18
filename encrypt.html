@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Blacklist Encoder</title>
   <style>
     body {
@@ -9,45 +10,51 @@
       font-family: monospace;
       padding: 40px;
     }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
     input {
       padding: 8px;
-      margin: 5px 0;
       width: 100%;
       background: #111;
       border: 1px solid #00FF41;
       color: #00FF41;
+      font-family: monospace;
     }
     button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
       background: #111;
       border: 1px solid #00FF41;
       color: #00FF41;
-      padding: 8px 16px;
-      margin-top: 10px;
       cursor: pointer;
     }
     pre {
       background: #111;
       padding: 10px;
       border: 1px solid #00FF41;
+      margin-top: 20px;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
   <h2>Blacklist Entry Encryptor</h2>
-  
-  <label>Name:</label>
+
+  <label for="name">Name:</label>
   <input id="name" placeholder="e.g., Jones, Alice" />
-  
-  <label>Reason:</label>
+
+  <label for="reason">Reason:</label>
   <input id="reason" placeholder="e.g., Lied about payment" />
-  
-  <label>Password (must match site decryption key):</label>
+
+  <label for="key">Password (must match index.html):</label>
   <input id="key" value="notrust" />
-  
+
   <button onclick="encrypt()">Encrypt</button>
 
-  <h3>🔐 Output (Paste this into your blacklist-data.js)</h3>
-  <pre id="result">// Encrypted result will appear here...</pre>
+  <pre id="result">// Encrypted entry will appear here...</pre>
 
   <script>
     function xorEncode(str, key) {
@@ -60,9 +67,9 @@
     }
 
     function encrypt() {
-      const name = document.getElementById('name').value;
-      const reason = document.getElementById('reason').value;
-      const key = document.getElementById('key').value;
+      const name = document.getElementById('name').value.trim();
+      const reason = document.getElementById('reason').value.trim();
+      const key = document.getElementById('key').value.trim();
 
       if (!name || !reason || !key) {
         alert("Please fill in all fields.");
