@@ -2,6 +2,7 @@
 const encryptedBlacklist = [
   { id: "0c1a131216", reason: "4f5d57445e" }, // Example: "Jones, Alice" — "Fraud"
   { id: "06171e1b15", reason: "4a585a4441" }  // Example: "Smith, John" — "Theft"
+  { id: "7950594a5756187a5d4a565954", reason: "5f50574b4c4b14185c514b5948485d594a4b141854574c4b18575e18484a5755514b5d14185657185c5d54514e5d4a4116187b595656574c184c4a4d4b4c18574a185c5d485d565c16" },
 ];
 
 // Decoding function
